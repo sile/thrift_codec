@@ -90,7 +90,7 @@ impl CompactDecode for Message {
 
         let seq_id = track!(read_var32(reader))?;
         let name = track!(String::decode(reader))?;
-        let body = track!(Struct::decode(reader))?;
+        let body = track!(Struct::decode(reader), "name={:?}", name)?;
 
         Ok(Message {
             name,
@@ -178,7 +178,9 @@ impl CompactDecode for List {
         }
 
         fn values<T: CompactDecode, R: Read>(reader: &mut R, size: usize) -> Result<Vec<T>> {
-            (0..size).map(|_| track!(T::decode(reader))).collect()
+            (0..size)
+                .map(|_| track!(T::decode(reader), "size={}", size))
+                .collect()
         }
         let elements = match element_type {
             ELEMENT_TYPE_BOOL => track!(values(reader, size)).map(Values::Bool)?,
