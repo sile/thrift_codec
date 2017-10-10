@@ -11,6 +11,7 @@ macro_rules! track_io {
 pub use error::{Error, ErrorKind};
 
 pub mod collections;
+pub mod decode;
 pub mod encode;
 pub mod message;
 pub mod structure;

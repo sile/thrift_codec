@@ -76,6 +76,7 @@ impl BinaryEncode for Message {
         track_io!(writer.write_u8(self.kind as u8))?;
         track!(self.name.as_str().encode(writer))?;
         track!((self.seq_id as i32).encode(writer))?;
+        track!(self.body.encode(writer))?;
         Ok(())
     }
 }
