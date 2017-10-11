@@ -1,14 +1,26 @@
 use structure::Struct;
 
 #[derive(Debug)]
+#[cfg_attr(feature = "serde", derive(Serialize))]
 pub struct Message {
     pub name: String,
     pub kind: MessageKind,
     pub seq_id: u32,
     pub body: Struct,
 }
+impl Message {
+    pub fn oneway(name: &str, seq_id: u32, body: Struct) -> Self {
+        Message {
+            name: name.to_owned(),
+            kind: MessageKind::Oneway,
+            seq_id,
+            body,
+        }
+    }
+}
 
 #[derive(Debug, Clone, Copy)]
+#[cfg_attr(feature = "serde", derive(Serialize))]
 pub enum MessageKind {
     Call = 1,
     Reply = 2,

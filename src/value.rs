@@ -2,6 +2,7 @@ use collections::{Map, Set, List};
 use structure::Struct;
 
 #[derive(Debug)]
+#[cfg_attr(feature = "serde", derive(Serialize))]
 pub enum Value {
     Bool(bool),
     Byte(u8),
@@ -30,6 +31,61 @@ impl Value {
             Value::Set(_) => ValueKind::Set,
             Value::List(_) => ValueKind::List,
         }
+    }
+}
+impl From<bool> for Value {
+    fn from(f: bool) -> Value {
+        Value::Bool(f)
+    }
+}
+impl From<u8> for Value {
+    fn from(f: u8) -> Value {
+        Value::Byte(f)
+    }
+}
+impl From<f64> for Value {
+    fn from(f: f64) -> Value {
+        Value::Double(f)
+    }
+}
+impl From<i16> for Value {
+    fn from(f: i16) -> Value {
+        Value::I16(f)
+    }
+}
+impl From<i32> for Value {
+    fn from(f: i32) -> Value {
+        Value::I32(f)
+    }
+}
+impl From<i64> for Value {
+    fn from(f: i64) -> Value {
+        Value::I64(f)
+    }
+}
+impl From<String> for Value {
+    fn from(f: String) -> Value {
+        Value::String(f)
+    }
+}
+impl From<Struct> for Value {
+    fn from(f: Struct) -> Value {
+        Value::Struct(f)
+    }
+}
+impl From<List> for Value {
+    fn from(f: List) -> Value {
+        Value::List(f)
+    }
+}
+impl From<Set> for Value {
+    fn from(f: Set) -> Value {
+        Value::Set(f)
+    }
+}
+impl From<Map> for Value {
+    fn from(f: Map) -> Value {
+        Value::Map(f)
     }
 }
 
@@ -66,6 +122,7 @@ impl<'a> ValueRef<'a> {
 }
 
 #[derive(Debug)]
+#[cfg_attr(feature = "serde", derive(Serialize))]
 pub enum Values {
     Bool(Vec<bool>),
     Byte(Vec<u8>),

@@ -6,6 +6,9 @@ authors = ["Takeru Ohta <phjgt308@gmail.com>"]
 [dependencies]
 byteorder = "1"
 trackable = "0.2"
+serde = { version = "1", optional = true, default-features = false, features = ["derive"] }
 
 [dev-dependencies]
 clap = "2"
+serdeconv = "0.3"
+thrift_codec = {path = ".", features = ["serde"]}

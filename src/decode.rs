@@ -5,6 +5,7 @@ use trackable::error::ErrorKindExt;
 
 use {Result, ErrorKind};
 use collections::{List, Set, Map};
+use constants::compact::*;
 use message::{Message, MessageKind};
 use structure::{Struct, Field};
 use value::{Value, Values};
@@ -74,10 +75,6 @@ impl CompactDecode for String {
         }))
     }
 }
-
-const PROTOCOL_ID: u8 = 0x82;
-const VERSION: u8 = 0b0_0001;
-
 impl CompactDecode for Message {
     fn decode<R: Read>(reader: &mut R) -> Result<Self> {
         let protocol_id = track_io!(reader.read_u8())?;
@@ -100,20 +97,6 @@ impl CompactDecode for Message {
         })
     }
 }
-
-pub const FIELD_TYPE_BOOLEAN_TRUE: u8 = 1;
-pub const FIELD_TYPE_BOOLEAN_FALSE: u8 = 2;
-pub const FIELD_TYPE_BYTE: u8 = 3;
-pub const FIELD_TYPE_I16: u8 = 4;
-pub const FIELD_TYPE_I32: u8 = 5;
-pub const FIELD_TYPE_I64: u8 = 6;
-pub const FIELD_TYPE_DOUBLE: u8 = 7;
-pub const FIELD_TYPE_BINARY: u8 = 8; // for binary and string fields
-pub const FIELD_TYPE_LIST: u8 = 9;
-pub const FIELD_TYPE_SET: u8 = 10;
-pub const FIELD_TYPE_MAP: u8 = 11;
-pub const FIELD_TYPE_STRUCT: u8 = 12; // for structs and union fields
-
 impl CompactDecode for Struct {
     fn decode<R: Read>(reader: &mut R) -> Result<Self> {
         let mut prev_field_id = 0;
@@ -125,7 +108,7 @@ impl CompactDecode for Struct {
             }
             let field_id_delta = b >> 4;
             let field_type = b & 0b1111;
-            let field_id = if field_id_delta == 0 {
+            let field_id = if field_id_delta != 0 {
                 prev_field_id + field_id_delta as i16
             } else {
                 track!(i16::decode(reader))?
@@ -154,19 +137,6 @@ impl CompactDecode for Struct {
         Ok(Struct { fields })
     }
 }
-
-pub const ELEMENT_TYPE_BOOL: u8 = 2;
-pub const ELEMENT_TYPE_BYTE: u8 = 3;
-pub const ELEMENT_TYPE_DOUBLE: u8 = 4;
-pub const ELEMENT_TYPE_I16: u8 = 6;
-pub const ELEMENT_TYPE_I32: u8 = 8;
-pub const ELEMENT_TYPE_I64: u8 = 10;
-pub const ELEMENT_TYPE_STRING: u8 = 11; // for binary and string fields
-pub const ELEMENT_TYPE_STRUCT: u8 = 12; // for struct and union fields
-pub const ELEMENT_TYPE_MAP: u8 = 13;
-pub const ELEMENT_TYPE_SET: u8 = 14;
-pub const ELEMENT_TYPE_LIST: u8 = 15;
-
 impl CompactDecode for List {
     fn decode<R: Read>(reader: &mut R) -> Result<Self> {
         let b = track_io!(reader.read_u8())?;
@@ -296,7 +266,7 @@ fn read_var32<R: Read>(reader: &mut R) -> Result<u32> {
     for i in 0.. {
         track_assert!(i < 5, ErrorKind::InvalidInput);
         let b = track_io!(reader.read_u8())?;
-        n = (n << 7) + (b & 0b0111_1111) as u32;
+        n += ((b & 0b0111_1111) as u32) << (i * 7);
         if (b & 0b1000_0000) == 0 {
             break;
         }
@@ -311,7 +281,7 @@ fn read_var64<R: Read>(reader: &mut R) -> Result<u64> {
     for i in 0.. {
         track_assert!(i < 10, ErrorKind::InvalidInput);
         let b = track_io!(reader.read_u8())?;
-        n = (n << 7) + (b & 0b0111_1111) as u64;
+        n += ((b & 0b0111_1111) as u64) << (i * 7);
         if (b & 0b1000_0000) == 0 {
             break;
         }
@@ -326,7 +296,6 @@ fn zigzag_to_i32(n: u32) -> i32 {
 fn zigzag_to_i64(n: u64) -> i64 {
     (n >> 1) as i64 ^ -(n as i64 & 1)
 }
-
 
 #[cfg(test)]
 mod test {
