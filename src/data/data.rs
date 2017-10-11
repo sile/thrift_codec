@@ -143,6 +143,22 @@ impl<'a> DataRef<'a> {
             DataRef::List(_) => DataKind::List,
         }
     }
+    pub fn to_owned(&self) -> Data {
+        match *self {
+            DataRef::Bool(v) => Data::Bool(v.to_owned()),
+            DataRef::Byte(v) => Data::Byte(v.to_owned()),
+            DataRef::I8(v) => Data::I8(v.to_owned()),
+            DataRef::I16(v) => Data::I16(v.to_owned()),
+            DataRef::I32(v) => Data::I32(v.to_owned()),
+            DataRef::I64(v) => Data::I64(v.to_owned()),
+            DataRef::Double(v) => Data::Double(v.to_owned()),
+            DataRef::Binary(v) => Data::Binary(v.to_owned()),
+            DataRef::Struct(v) => Data::Struct(v.to_owned()),
+            DataRef::Map(v) => Data::Map(v.to_owned()),
+            DataRef::Set(v) => Data::Set(v.to_owned()),
+            DataRef::List(v) => Data::List(v.to_owned()),
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
