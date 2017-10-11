@@ -12,16 +12,14 @@ extern crate serde;
 // }
 
 pub use error::{Error, ErrorKind};
+pub use decode::{BinaryDecode, CompactDecode};
+pub use encode::{BinaryEncode, CompactEncode};
 
-// pub mod collections;
-// pub mod compact_encode;
 pub mod data;
-// pub mod decode;
-// pub mod encode;
 pub mod message;
-// pub mod structure;
-// pub mod value;
 
+mod decode;
+mod encode;
 mod error;
 
 // mod constants {
