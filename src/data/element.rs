@@ -4,7 +4,6 @@ use data::{DataRef, DataKind, Struct, Map, Set, List};
 #[cfg_attr(feature = "serde", derive(Serialize))]
 pub enum Elements {
     Bool(Vec<bool>),
-    Byte(Vec<u8>),
     I8(Vec<i8>),
     I16(Vec<i16>),
     I32(Vec<i32>),
@@ -20,7 +19,6 @@ impl Elements {
     pub fn get(&self, index: usize) -> Option<DataRef> {
         match *self {
             Elements::Bool(ref v) => v.get(index).map(DataRef::Bool),
-            Elements::Byte(ref v) => v.get(index).map(DataRef::Byte),
             Elements::I8(ref v) => v.get(index).map(DataRef::I8),
             Elements::I16(ref v) => v.get(index).map(DataRef::I16),
             Elements::I32(ref v) => v.get(index).map(DataRef::I32),
@@ -36,7 +34,6 @@ impl Elements {
     pub fn len(&self) -> usize {
         match *self {
             Elements::Bool(ref v) => v.len(),
-            Elements::Byte(ref v) => v.len(),
             Elements::I8(ref v) => v.len(),
             Elements::I16(ref v) => v.len(),
             Elements::I32(ref v) => v.len(),
@@ -61,7 +58,6 @@ impl Elements {
     pub fn kind(&self) -> DataKind {
         match *self {
             Elements::Bool(_) => DataKind::Bool,
-            Elements::Byte(_) => DataKind::Byte,
             Elements::I8(_) => DataKind::I8,
             Elements::I16(_) => DataKind::I16,
             Elements::I32(_) => DataKind::I32,
@@ -78,11 +74,6 @@ impl Elements {
 impl From<Vec<bool>> for Elements {
     fn from(f: Vec<bool>) -> Self {
         Elements::Bool(f)
-    }
-}
-impl From<Vec<u8>> for Elements {
-    fn from(f: Vec<u8>) -> Self {
-        Elements::Byte(f)
     }
 }
 impl From<Vec<i8>> for Elements {

@@ -23,11 +23,6 @@ impl From<Vec<bool>> for Set {
         Set::new(Elements::Bool(f))
     }
 }
-impl From<Vec<u8>> for Set {
-    fn from(f: Vec<u8>) -> Self {
-        Set::new(Elements::Byte(f))
-    }
-}
 impl From<Vec<i8>> for Set {
     fn from(f: Vec<i8>) -> Self {
         Set::new(Elements::I8(f))

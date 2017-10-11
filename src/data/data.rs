@@ -4,7 +4,6 @@ use data::{Struct, Map, Set, List};
 #[cfg_attr(feature = "serde", derive(Serialize))]
 pub enum Data {
     Bool(bool),
-    Byte(u8),
     I8(i8),
     I16(i16),
     I32(i32),
@@ -20,7 +19,6 @@ impl Data {
     pub fn kind(&self) -> DataKind {
         match *self {
             Data::Bool(_) => DataKind::Bool,
-            Data::Byte(_) => DataKind::Byte,
             Data::I8(_) => DataKind::I8,
             Data::I16(_) => DataKind::I16,
             Data::I32(_) => DataKind::I32,
@@ -33,15 +31,25 @@ impl Data {
             Data::List(_) => DataKind::List,
         }
     }
+    pub fn as_ref(&self) -> DataRef {
+        match *self {
+            Data::Bool(ref v) => DataRef::Bool(v),
+            Data::I8(ref v) => DataRef::I8(v),
+            Data::I16(ref v) => DataRef::I16(v),
+            Data::I32(ref v) => DataRef::I32(v),
+            Data::I64(ref v) => DataRef::I64(v),
+            Data::Double(ref v) => DataRef::Double(v),
+            Data::Binary(ref v) => DataRef::Binary(v),
+            Data::Struct(ref v) => DataRef::Struct(v),
+            Data::Map(ref v) => DataRef::Map(v),
+            Data::Set(ref v) => DataRef::Set(v),
+            Data::List(ref v) => DataRef::List(v),
+        }
+    }
 }
 impl From<bool> for Data {
     fn from(f: bool) -> Self {
         Data::Bool(f)
-    }
-}
-impl From<u8> for Data {
-    fn from(f: u8) -> Self {
-        Data::Byte(f)
     }
 }
 impl From<i8> for Data {
@@ -114,7 +122,6 @@ impl From<List> for Data {
 #[cfg_attr(feature = "serde", derive(Serialize))]
 pub enum DataRef<'a> {
     Bool(&'a bool),
-    Byte(&'a u8),
     I8(&'a i8),
     I16(&'a i16),
     I32(&'a i32),
@@ -130,7 +137,6 @@ impl<'a> DataRef<'a> {
     pub fn kind(&self) -> DataKind {
         match *self {
             DataRef::Bool(_) => DataKind::Bool,
-            DataRef::Byte(_) => DataKind::Byte,
             DataRef::I8(_) => DataKind::I8,
             DataRef::I16(_) => DataKind::I16,
             DataRef::I32(_) => DataKind::I32,
@@ -146,7 +152,6 @@ impl<'a> DataRef<'a> {
     pub fn to_owned(&self) -> Data {
         match *self {
             DataRef::Bool(v) => Data::Bool(v.to_owned()),
-            DataRef::Byte(v) => Data::Byte(v.to_owned()),
             DataRef::I8(v) => Data::I8(v.to_owned()),
             DataRef::I16(v) => Data::I16(v.to_owned()),
             DataRef::I32(v) => Data::I32(v.to_owned()),
@@ -164,16 +169,15 @@ impl<'a> DataRef<'a> {
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
 pub enum DataKind {
-    Bool,
-    Byte,
-    I8,
-    I16,
-    I32,
-    I64,
-    Double,
-    Binary,
-    Struct,
-    Map,
-    Set,
-    List,
+    Bool = 2,
+    I8 = 3,
+    I16 = 6,
+    I32 = 8,
+    I64 = 10,
+    Double = 4,
+    Binary = 11,
+    Struct = 12,
+    Map = 13,
+    Set = 14,
+    List = 15,
 }
