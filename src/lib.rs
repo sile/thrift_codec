@@ -5,11 +5,11 @@ extern crate trackable;
 #[macro_use]
 extern crate serde;
 
-// macro_rules! track_io {
-//     ($expr:expr) => {
-//         track!($expr.map_err(::Error::from))
-//     }
-// }
+macro_rules! track_io {
+    ($expr:expr) => {
+        track!($expr.map_err(::Error::from))
+    }
+}
 
 pub use error::{Error, ErrorKind};
 pub use decode::{BinaryDecode, CompactDecode};
