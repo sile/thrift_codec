@@ -7,7 +7,7 @@ extern crate serde;
 
 macro_rules! track_io {
     ($expr:expr) => {
-        track!($expr.map_err(::Error::from))
+        track!($expr.map_err(|e: ::std::io::Error| ::Error::from(e)))
     }
 }
 
@@ -22,5 +22,6 @@ mod constants;
 mod decode;
 mod encode;
 mod error;
+mod zigzag;
 
 pub type Result<T> = std::result::Result<T, Error>;
