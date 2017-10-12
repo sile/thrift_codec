@@ -1,5 +1,7 @@
 use data::{DataRef, DataKind, Elements};
 
+use {Result, ErrorKind};
+
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
 pub struct Map(Option<Inner>);
@@ -24,12 +26,16 @@ impl Map {
             values: values.into(),
         }))
     }
+    pub fn from_keys_and_values(keys: Elements, values: Elements) -> Result<Self> {
+        track_assert_eq!(keys.len(), values.len(), ErrorKind::InvalidInput);
+        Ok(Map(Some(Inner { keys, values })))
+    }
     pub fn get(&self, index: usize) -> Option<(DataRef, DataRef)> {
         self.0.as_ref().and_then(|inner| inner.get(index))
     }
     pub fn iter(&self) -> MapIter {
         MapIter {
-            map: &self,
+            map: self,
             index: 0,
         }
     }
