@@ -2,12 +2,17 @@ use std::ops::Deref;
 
 use data::{Struct, Elements, Map, List};
 
-#[derive(Debug, Clone)]
+/// Set.
+///
+/// Note that internally this has the same representation with `List`.
+/// No duplicate elements are removed.
+#[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
 pub struct Set {
     elements: Elements,
 }
 impl Set {
+    /// Makes a new `Set` instance.
     pub fn new(elements: Elements) -> Self {
         Set { elements }
     }

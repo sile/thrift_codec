@@ -7,7 +7,11 @@ use message::{Message, MessageKind};
 use data::{Data, DataKind, Struct, Map, Set, List, Field, Elements};
 use zigzag;
 
+/// This trait allows to decode objects which encoded by the [Thrift Binary protocol encoding][encoding].
+///
+/// [encoding]: https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md
 pub trait BinaryDecode: Sized {
+    /// Decodes an object.
     fn binary_decode<R: Read>(reader: &mut R) -> Result<Self>;
 }
 impl BinaryDecode for bool {
@@ -177,7 +181,11 @@ fn binary_decode_element<R: Read>(reader: &mut R, elements: &mut Elements) -> Re
     Ok(())
 }
 
+/// This trait allows to decode objects which encoded by the [Thrift Compact protocol encoding][encoding].
+///
+/// [encoding]: https://github.com/apache/thrift/blob/master/doc/specs/thrift-compact-protocol.md
 pub trait CompactDecode: Sized {
+    /// Decodes an object.
     fn compact_decode<R: Read>(reader: &mut R) -> Result<Self>;
 }
 impl CompactDecode for bool {

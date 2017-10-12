@@ -1,14 +1,28 @@
 use data::Data;
 
-#[derive(Debug, Clone)]
+/// Structure.
+///
+/// # Examples
+///
+/// ```
+/// use thrift_codec::data::{Struct, Field};
+///
+/// let a = Struct::new(vec![Field::new(1, "foo"), Field::new(2, "bar")]);
+/// let b = Struct::from(("foo", "bar"));
+/// assert_eq!(a, b);
+/// ```
+#[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
 pub struct Struct {
     fields: Vec<Field>,
 }
 impl Struct {
+    /// Makes a new `Struct` instance.
     pub fn new(fields: Vec<Field>) -> Self {
         Struct { fields }
     }
+
+    /// Returns the fields of this.
     pub fn fields(&self) -> &[Field] {
         &self.fields
     }
@@ -79,13 +93,15 @@ where
     }
 }
 
-#[derive(Debug, Clone)]
+/// A struct field.
+#[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
 pub struct Field {
     id: i16,
     data: Data,
 }
 impl Field {
+    /// Makes a new `Field` instance.
     pub fn new<T>(id: i16, data: T) -> Self
     where
         T: Into<Data>,
@@ -95,9 +111,13 @@ impl Field {
             data: data.into(),
         }
     }
+
+    /// Returns the identifier of this field.
     pub fn id(&self) -> i16 {
         self.id
     }
+
+    /// Returns the data of this field.
     pub fn data(&self) -> &Data {
         &self.data
     }

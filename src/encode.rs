@@ -7,7 +7,12 @@ use message::Message;
 use data::{Data, DataRef, DataKind, Struct, Map, Set, List};
 use zigzag;
 
+/// This trait allows to encode objects to the binaries specified by
+/// the [Thrift Binary protocol encoding][encoding].
+///
+/// [encoding]: https://github.com/apache/thrift/blob/master/doc/specs/thrift-binary-protocol.md
 pub trait BinaryEncode {
+    /// Encodes an object.
     fn binary_encode<W: Write>(&self, writer: &mut W) -> Result<()>;
 }
 impl BinaryEncode for bool {
@@ -135,7 +140,12 @@ impl BinaryEncode for List {
     }
 }
 
+/// This trait allows to encode objects to the binaries specified by
+/// the [Thrift Compact protocol encoding][encoding].
+///
+/// [encoding]: https://github.com/apache/thrift/blob/master/doc/specs/thrift-compact-protocol.md
 pub trait CompactEncode {
+    /// Encodes an object.
     fn compact_encode<W: Write>(&self, writer: &mut W) -> Result<()>;
 }
 impl CompactEncode for bool {

@@ -2,12 +2,14 @@ use std::ops::Deref;
 
 use data::{Struct, Elements, Map, Set};
 
-#[derive(Debug, Clone)]
+/// List.
+#[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
 pub struct List {
     elements: Elements,
 }
 impl List {
+    /// Makes a new `List` instance.
     pub fn new(elements: Elements) -> Self {
         List { elements }
     }

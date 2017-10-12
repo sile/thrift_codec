@@ -1,7 +1,9 @@
 use data::{DataRef, DataKind, Struct, Map, Set, List};
 
-#[derive(Debug, Clone)]
+/// A sequence of the values of a data kind.
+#[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
+#[allow(missing_docs)]
 pub enum Elements {
     Bool(Vec<bool>),
     I8(Vec<i8>),
@@ -16,6 +18,7 @@ pub enum Elements {
     List(Vec<List>),
 }
 impl Elements {
+    /// Makes an empty sequence which can have the elements belonging to `kind`.
     pub fn new(kind: DataKind) -> Self {
         match kind {
             DataKind::Bool => Elements::Bool(Vec::new()),
@@ -31,6 +34,8 @@ impl Elements {
             DataKind::List => Elements::List(Vec::new()),
         }
     }
+
+    /// Returns the element placed at the specified index.
     pub fn get(&self, index: usize) -> Option<DataRef> {
         match *self {
             Elements::Bool(ref v) => v.get(index).map(DataRef::Bool),
@@ -46,6 +51,8 @@ impl Elements {
             Elements::List(ref v) => v.get(index).map(DataRef::List),
         }
     }
+
+    /// Returns the element count of this sequence.
     pub fn len(&self) -> usize {
         match *self {
             Elements::Bool(ref v) => v.len(),
@@ -61,15 +68,21 @@ impl Elements {
             Elements::List(ref v) => v.len(),                                    
         }
     }
+
+    /// Returns `true` if this sequence has no elements.
     pub fn is_empty(&self) -> bool {
         self.len() == 0
     }
+
+    /// Returns an iterator over the elements of this sequence.
     pub fn iter(&self) -> ElementIter {
         ElementIter {
             elements: self,
             index: 0,
         }
     }
+
+    /// Returns the kind of the elements in this sequence.
     pub fn kind(&self) -> DataKind {
         match *self {
             Elements::Bool(_) => DataKind::Bool,
@@ -142,6 +155,7 @@ impl From<Vec<List>> for Elements {
     }
 }
 
+/// An iterator which traverse the elements of a `Elements`.
 #[derive(Debug)]
 pub struct ElementIter<'a> {
     elements: &'a Elements,

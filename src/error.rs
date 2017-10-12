@@ -20,7 +20,10 @@ impl From<std::string::FromUtf8Error> for Error {
 /// The list of the possible error kinds
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ErrorKind {
+    /// Input data is invalid.
     InvalidInput,
+
+    /// Other errors (e.g., I/O error).
     Other,
 }
 impl TrackableErrorKind for ErrorKind {}

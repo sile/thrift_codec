@@ -1,7 +1,9 @@
 use data::{Struct, Map, Set, List};
 
-#[derive(Debug, Clone)]
+/// Data.
+#[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
+#[allow(missing_docs)]
 pub enum Data {
     Bool(bool),
     I8(i8),
@@ -16,6 +18,7 @@ pub enum Data {
     List(List),
 }
 impl Data {
+    /// Returns the kind of this data.
     pub fn kind(&self) -> DataKind {
         match *self {
             Data::Bool(_) => DataKind::Bool,
@@ -31,6 +34,8 @@ impl Data {
             Data::List(_) => DataKind::List,
         }
     }
+
+    /// Returns the reference to this data.
     pub fn as_ref(&self) -> DataRef {
         match *self {
             Data::Bool(ref v) => DataRef::Bool(v),
@@ -118,8 +123,10 @@ impl From<List> for Data {
     }
 }
 
-#[derive(Debug, Clone)]
+/// The reference to a `Data`.
+#[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
+#[allow(missing_docs)]
 pub enum DataRef<'a> {
     Bool(&'a bool),
     I8(&'a i8),
@@ -134,6 +141,7 @@ pub enum DataRef<'a> {
     List(&'a List),
 }
 impl<'a> DataRef<'a> {
+    /// Returns the kind of this data.
     pub fn kind(&self) -> DataKind {
         match *self {
             DataRef::Bool(_) => DataKind::Bool,
@@ -149,6 +157,8 @@ impl<'a> DataRef<'a> {
             DataRef::List(_) => DataKind::List,
         }
     }
+
+    /// Returns the owned (cloned) version of this data.
     pub fn to_owned(&self) -> Data {
         match *self {
             DataRef::Bool(v) => Data::Bool(v.to_owned()),
@@ -166,8 +176,10 @@ impl<'a> DataRef<'a> {
     }
 }
 
+/// Available data kinds.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
+#[allow(missing_docs)]
 pub enum DataKind {
     Bool = 2,
     I8 = 3,
