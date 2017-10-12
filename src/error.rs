@@ -11,6 +11,11 @@ impl From<std::io::Error> for Error {
         ErrorKind::Other.cause(f).into()
     }
 }
+impl From<std::string::FromUtf8Error> for Error {
+    fn from(f: std::string::FromUtf8Error) -> Self {
+        ErrorKind::InvalidInput.cause(f).into()
+    }
+}
 
 /// The list of the possible error kinds
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

@@ -16,6 +16,21 @@ pub enum Elements {
     List(Vec<List>),
 }
 impl Elements {
+    pub fn new(kind: DataKind) -> Self {
+        match kind {
+            DataKind::Bool => Elements::Bool(Vec::new()),
+            DataKind::I8 => Elements::I8(Vec::new()),
+            DataKind::I16 => Elements::I16(Vec::new()),
+            DataKind::I32 => Elements::I32(Vec::new()),
+            DataKind::I64 => Elements::I64(Vec::new()),
+            DataKind::Double => Elements::Double(Vec::new()),
+            DataKind::Binary => Elements::Binary(Vec::new()),
+            DataKind::Struct => Elements::Struct(Vec::new()),
+            DataKind::Map => Elements::Map(Vec::new()),
+            DataKind::Set => Elements::Set(Vec::new()),
+            DataKind::List => Elements::List(Vec::new()),
+        }
+    }
     pub fn get(&self, index: usize) -> Option<DataRef> {
         match *self {
             Elements::Bool(ref v) => v.get(index).map(DataRef::Bool),

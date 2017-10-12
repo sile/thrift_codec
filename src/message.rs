@@ -1,49 +1,32 @@
-use std::borrow::Cow;
-
 use data::Struct;
 
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
 pub struct Message {
-    method_name: Cow<'static, str>,
+    method_name: String,
     kind: MessageKind,
     sequence_id: i32,
     body: Struct,
 }
 impl Message {
-    pub fn new<T>(method_name: T, kind: MessageKind, sequence_id: i32, body: Struct) -> Self
-    where
-        T: Into<Cow<'static, str>>,
-    {
+    pub fn new(method_name: &str, kind: MessageKind, sequence_id: i32, body: Struct) -> Self {
         Message {
-            method_name: method_name.into(),
+            method_name: method_name.to_owned(),
             kind,
             sequence_id,
             body,
         }
     }
-    pub fn call<T>(method_name: T, sequence_id: i32, body: Struct) -> Self
-    where
-        T: Into<Cow<'static, str>>,
-    {
+    pub fn call(method_name: &str, sequence_id: i32, body: Struct) -> Self {
         Self::new(method_name, MessageKind::Call, sequence_id, body)
     }
-    pub fn reply<T>(method_name: T, sequence_id: i32, body: Struct) -> Self
-    where
-        T: Into<Cow<'static, str>>,
-    {
+    pub fn reply(method_name: &str, sequence_id: i32, body: Struct) -> Self {
         Self::new(method_name, MessageKind::Reply, sequence_id, body)
     }
-    pub fn exception<T>(method_name: T, sequence_id: i32, body: Struct) -> Self
-    where
-        T: Into<Cow<'static, str>>,
-    {
+    pub fn exception(method_name: &str, sequence_id: i32, body: Struct) -> Self {
         Self::new(method_name, MessageKind::Exception, sequence_id, body)
     }
-    pub fn oneway<T>(method_name: T, sequence_id: i32, body: Struct) -> Self
-    where
-        T: Into<Cow<'static, str>>,
-    {
+    pub fn oneway(method_name: &str, sequence_id: i32, body: Struct) -> Self {
         Self::new(method_name, MessageKind::Oneway, sequence_id, body)
     }
     pub fn method_name(&self) -> &str {
@@ -69,13 +52,13 @@ pub enum MessageKind {
     Oneway = 4,
 }
 impl MessageKind {
-    // pub(crate) fn from_u8(n: u8) -> Option<Self> {
-    //     match n {
-    //         1 => Some(MessageKind::Call),
-    //         2 => Some(MessageKind::Reply),
-    //         3 => Some(MessageKind::Exception),
-    //         4 => Some(MessageKind::Oneway),
-    //         _ => None,
-    //     }
-    // }
+    pub(crate) fn from_u8(n: u8) -> Option<Self> {
+        match n {
+            1 => Some(MessageKind::Call),
+            2 => Some(MessageKind::Reply),
+            3 => Some(MessageKind::Exception),
+            4 => Some(MessageKind::Oneway),
+            _ => None,
+        }
+    }
 }

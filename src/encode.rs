@@ -150,12 +150,12 @@ impl CompactEncode for i8 {
 }
 impl CompactEncode for i16 {
     fn compact_encode<W: Write>(&self, writer: &mut W) -> Result<()> {
-        track!((*self as i32).compact_encode(writer))
+        track!(i32::from(*self).compact_encode(writer))
     }
 }
 impl CompactEncode for i32 {
     fn compact_encode<W: Write>(&self, writer: &mut W) -> Result<()> {
-        track!(write_varint(writer, zigzag::from_i32(*self) as u64))
+        track!(write_varint(writer, u64::from(zigzag::from_i32(*self))))
     }
 }
 impl CompactEncode for i64 {
@@ -183,7 +183,7 @@ impl CompactEncode for Message {
             ((self.kind() as u8) << 5) |
                 constants::COMPACT_PROTOCOL_VERSION,
         ))?;
-        track!(write_varint(writer, self.sequence_id() as u32 as u64))?;
+        track!(write_varint(writer, u64::from(self.sequence_id() as u32)))?;
         track!(self.method_name().as_bytes().compact_encode(writer))?;
         track!(self.body().compact_encode(writer))?;
         Ok(())
@@ -235,7 +235,7 @@ impl CompactEncode for Struct {
                 Data::List(_) => constants::COMPACT_FIELD_LIST,
             };
             track_io!(writer.write_u8((delta << 4) as u8 | kind))?;
-            if delta != 0 {
+            if delta == 0 {
                 track!(field.id().compact_encode(writer))?;
             }
             if field.data().kind() != DataKind::Bool {
@@ -297,7 +297,7 @@ impl CompactEncode for List {
 fn write_varint<W: Write>(writer: &mut W, mut n: u64) -> Result<()> {
     loop {
         let mut b = (n & 0b0111_1111) as u8;
-        n = n >> 7;
+        n >>= 7;
         if n != 0 {
             b |= 0b1000_0000;
         }
