@@ -21,4 +21,10 @@ serde = { version = "1", optional = true, default-features = false, features = [
 [dev-dependencies]
 clap = "2"
 serdeconv = "0.3"
-thrift_codec = {path = ".", version = "0.1", features = ["serde"]}
+
+[[example]]
+name = "decode_message"
+required-features = ["serde"]
+
+[[example]]
+name = "encode_message"
