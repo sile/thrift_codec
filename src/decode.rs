@@ -1,5 +1,5 @@
 use std::io::Read;
-use byteorder::{ReadBytesExt, BigEndian};
+use byteorder::{ReadBytesExt, BigEndian, LittleEndian};
 
 use {Result, Error, ErrorKind};
 use constants;
@@ -222,7 +222,14 @@ impl CompactDecode for i64 {
 }
 impl CompactDecode for f64 {
     fn compact_decode<R: Read>(reader: &mut R) -> Result<Self> {
-        track_io!(reader.read_f64::<BigEndian>())
+        // [NOTE]
+        //
+        // The [specification] says "We are using big-endian",
+        // but actually, implementations are using little-endian.
+        // (e.g., https://github.com/apache/thrift/blob/8b8a8efea13d1c97f856053af0a5c0e6a8a76354/lib/java/src/org/apache/thrift/protocol/TCompactProtocol.java#L845)
+        //
+        // [specification]: https://github.com/apache/thrift/blob/8b8a8efea13d1c97f856053af0a5c0e6a8a76354/doc/specs/thrift-compact-protocol.md
+        track_io!(reader.read_f64::<LittleEndian>())
     }
 }
 impl CompactDecode for Vec<u8> {
@@ -389,6 +396,14 @@ impl CompactDecode for List {
     }
 }
 
+
+// [NOTE]
+//
+// The [specification] says "We are using big-endian",
+// but actually, implementations are using little-endian.
+// (e.g., https://github.com/apache/thrift/blob/8b8a8efea13d1c97f856053af0a5c0e6a8a76354/lib/java/src/org/apache/thrift/protocol/TCompactProtocol.java#L796)
+//
+// [specification]: https://github.com/apache/thrift/blob/8b8a8efea13d1c97f856053af0a5c0e6a8a76354/doc/specs/thrift-compact-protocol.md
 fn read_varint<R: Read>(reader: &mut R) -> Result<u64> {
     let mut n = 0;
     for i in 0.. {

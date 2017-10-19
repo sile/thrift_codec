@@ -1,5 +1,5 @@
 use std::io::Write;
-use byteorder::{WriteBytesExt, BigEndian};
+use byteorder::{WriteBytesExt, BigEndian, LittleEndian};
 
 use {Result, ErrorKind};
 use constants;
@@ -175,7 +175,14 @@ impl CompactEncode for i64 {
 }
 impl CompactEncode for f64 {
     fn compact_encode<W: Write>(&self, writer: &mut W) -> Result<()> {
-        track_io!(writer.write_f64::<BigEndian>(*self))
+        // [NOTE]
+        //
+        // The [specification] says "We are using big-endian",
+        // but actually, implementations are using little-endian.
+        // (e.g., https://github.com/apache/thrift/blob/8b8a8efea13d1c97f856053af0a5c0e6a8a76354/lib/java/src/org/apache/thrift/protocol/TCompactProtocol.java#L466)
+        //
+        // [specification]: https://github.com/apache/thrift/blob/8b8a8efea13d1c97f856053af0a5c0e6a8a76354/doc/specs/thrift-compact-protocol.md
+        track_io!(writer.write_f64::<LittleEndian>(*self))
     }
 }
 impl<'a> CompactEncode for &'a [u8] {
@@ -304,6 +311,13 @@ impl CompactEncode for List {
     }
 }
 
+// [NOTE]
+//
+// The [specification] says "We are using big-endian",
+// but actually, implementations are using little-endian.
+// (e.g., https://github.com/apache/thrift/blob/8b8a8efea13d1c97f856053af0a5c0e6a8a76354/lib/java/src/org/apache/thrift/protocol/TCompactProtocol.java#L435)
+//
+// [specification]: https://github.com/apache/thrift/blob/8b8a8efea13d1c97f856053af0a5c0e6a8a76354/doc/specs/thrift-compact-protocol.md
 fn write_varint<W: Write>(writer: &mut W, mut n: u64) -> Result<()> {
     loop {
         let mut b = (n & 0b0111_1111) as u8;
