@@ -1,10 +1,8 @@
-use std;
 use trackable::error::TrackableError;
 use trackable::error::{ErrorKind as TrackableErrorKind, ErrorKindExt};
 
 /// This crate specific error type.
-#[derive(Debug, Clone)]
-#[derive(TrackableError)]
+#[derive(Debug, Clone, TrackableError)]
 pub struct Error(TrackableError<ErrorKind>);
 impl From<std::io::Error> for Error {
     fn from(f: std::io::Error) -> Self {

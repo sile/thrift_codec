@@ -1,4 +1,4 @@
-use data::{Struct, Map, Set, List};
+use crate::data::{List, Map, Set, Struct};
 
 /// Data.
 #[derive(Debug, Clone, PartialEq)]

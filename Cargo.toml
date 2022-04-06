@@ -8,6 +8,7 @@ repository = "https://github.com/sile/thrift_codec"
 readme = "README.md"
 keywords = ["thrift"]
 license = "MIT"
+edition = "2021"
 
 [badges]
 travis-ci = {repository = "sile/thrift_codec"}

@@ -1,4 +1,4 @@
-use data::{DataRef, DataKind, Struct, Map, Set, List};
+use crate::data::{DataKind, DataRef, List, Map, Set, Struct};
 
 /// A sequence of the values of a data kind.
 #[derive(Debug, Clone, PartialEq)]
@@ -65,7 +65,7 @@ impl Elements {
             Elements::Struct(ref v) => v.len(),
             Elements::Map(ref v) => v.len(),
             Elements::Set(ref v) => v.len(),
-            Elements::List(ref v) => v.len(),                                    
+            Elements::List(ref v) => v.len(),
         }
     }
 

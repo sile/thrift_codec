@@ -1,11 +1,10 @@
+use crate::constants;
+use crate::data::{Data, DataKind, DataRef, List, Map, Set, Struct};
+use crate::message::Message;
+use crate::zigzag;
+use crate::{ErrorKind, Result};
+use byteorder::{BigEndian, LittleEndian, WriteBytesExt};
 use std::io::Write;
-use byteorder::{WriteBytesExt, BigEndian, LittleEndian};
-
-use {Result, ErrorKind};
-use constants;
-use message::Message;
-use data::{Data, DataRef, DataKind, Struct, Map, Set, List};
-use zigzag;
 
 /// This trait allows to encode objects to the binaries specified by
 /// the [Thrift Binary protocol encoding][encoding].
@@ -55,9 +54,7 @@ impl<'a> BinaryEncode for &'a [u8] {
 }
 impl BinaryEncode for Message {
     fn binary_encode<W: Write>(&self, writer: &mut W) -> Result<()> {
-        track_io!(writer.write_u16::<BigEndian>(
-            (1 << 15) | constants::BINARY_PROTOCOL_VERSION,
-        ))?;
+        track_io!(writer.write_u16::<BigEndian>((1 << 15) | constants::BINARY_PROTOCOL_VERSION,))?;
         track_io!(writer.write_u8(0))?;
         track_io!(writer.write_u8(self.kind() as u8))?;
         track!(self.method_name().as_bytes().binary_encode(writer))?;
@@ -196,10 +193,9 @@ impl<'a> CompactEncode for &'a [u8] {
 impl CompactEncode for Message {
     fn compact_encode<W: Write>(&self, writer: &mut W) -> Result<()> {
         track_io!(writer.write_u8(constants::COMPACT_PROTOCOL_ID))?;
-        track_io!(writer.write_u8(
-            ((self.kind() as u8) << 5) |
-                constants::COMPACT_PROTOCOL_VERSION,
-        ))?;
+        track_io!(
+            writer.write_u8(((self.kind() as u8) << 5) | constants::COMPACT_PROTOCOL_VERSION,)
+        )?;
         track!(write_varint(writer, u64::from(self.sequence_id() as u32)))?;
         track!(self.method_name().as_bytes().compact_encode(writer))?;
         track!(self.body().compact_encode(writer))?;

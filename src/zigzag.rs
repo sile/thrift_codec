@@ -16,7 +16,7 @@ pub fn to_i64(n: u64) -> i64 {
 
 #[cfg(test)]
 mod test {
-    use zigzag;
+    use crate::zigzag;
 
     #[test]
     fn zigzag_works() {

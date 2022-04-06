@@ -1,4 +1,4 @@
-use data::Data;
+use crate::data::Data;
 
 /// Structure.
 ///
