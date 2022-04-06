@@ -84,7 +84,7 @@ mod test {
     use super::*;
 
     #[test]
-    #[cfg_attr(rustfmt, rustfmt_skip)]
+    #[rustfmt::skip]
     fn it_works() {
         let message = Message::oneway("foo_method", 1, Struct::from(("arg1", 2)));
         let mut buf = Vec::new();

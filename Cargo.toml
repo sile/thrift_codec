@@ -15,12 +15,12 @@ codecov = {repository = "sile/thrift_codec"}
 
 [dependencies]
 byteorder = "1"
-trackable = "0.2"
+trackable = "1.2"
 serde = { version = "1", optional = true, default-features = false, features = ["derive"] }
 
 [dev-dependencies]
 clap = "2"
-serdeconv = "0.3"
+serdeconv = "0.4"
 
 [[example]]
 name = "decode_message"
