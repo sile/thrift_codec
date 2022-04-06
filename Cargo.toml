@@ -11,8 +11,7 @@ license = "MIT"
 edition = "2021"
 
 [badges]
-travis-ci = {repository = "sile/thrift_codec"}
-codecov = {repository = "sile/thrift_codec"}
+coveralls = { repository = "sile/dagc" }
 
 [dependencies]
 byteorder = "1"
