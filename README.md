@@ -1,7 +1,7 @@
 thrift_codec
 ============
 
-[![Crates.io: thrift_codec](http://meritbadge.herokuapp.com/thrift_codec)](https://crates.io/crates/thrift_codec)
+[![thrift_codec](https://img.shields.io/crates/v/thrift_codec.svg)](https://crates.io/crates/thrift_codec)
 [![Documentation](https://docs.rs/thrift_codec/badge.svg)](https://docs.rs/thrift_codec)
 [![Build Status](https://travis-ci.org/sile/thrift_codec.svg?branch=master)](https://travis-ci.org/sile/thrift_codec)
 [![Code Coverage](https://codecov.io/gh/sile/thrift_codec/branch/master/graph/badge.svg)](https://codecov.io/gh/sile/thrift_codec/branch/master)
