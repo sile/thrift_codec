@@ -5,20 +5,25 @@ extern crate trackable;
 extern crate serde;
 extern crate serdeconv;
 
+use clap::Parser;
 use std::fs::File;
-use clap::{App, Arg};
-use thrift_codec::{BinaryDecode, CompactDecode};
 use thrift_codec::message::Message;
+use thrift_codec::{BinaryDecode, CompactDecode};
 use trackable::error::Failure;
 
+#[derive(Debug, Parser)]
+#[clap(name = "decode_message")]
+struct Args {
+    input_file: std::path::PathBuf,
+
+    #[clap(long)]
+    compact: bool,
+}
+
 fn main() {
-    let matches = App::new("decode_message")
-        .arg(Arg::with_name("INPUT_FILE").index(1).required(true))
-        .arg(Arg::with_name("COMPACT").long("compact"))
-        .get_matches();
-    let input_file = matches.value_of("INPUT_FILE").unwrap();
-    let mut input = track_try_unwrap!(File::open(input_file).map_err(Failure::from_error));
-    let message = if matches.is_present("COMPACT") {
+    let args = Args::parse();
+    let mut input = track_try_unwrap!(File::open(args.input_file).map_err(Failure::from_error));
+    let message = if args.compact {
         track_try_unwrap!(Message::compact_decode(&mut input))
     } else {
         track_try_unwrap!(Message::binary_decode(&mut input))
