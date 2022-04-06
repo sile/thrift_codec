@@ -1,9 +1,5 @@
-extern crate clap;
-extern crate thrift_codec;
 #[macro_use]
 extern crate trackable;
-extern crate serde;
-extern crate serdeconv;
 
 use clap::Parser;
 use std::fs::File;

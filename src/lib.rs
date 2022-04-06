@@ -48,7 +48,6 @@
 //! ```
 //!
 #![warn(missing_docs)]
-extern crate byteorder;
 #[macro_use]
 extern crate trackable;
 #[cfg(feature = "serde")]
@@ -57,13 +56,13 @@ extern crate serde;
 
 macro_rules! track_io {
     ($expr:expr) => {
-        track!($expr.map_err(<::Error as From<::std::io::Error>>::from))
-    }
+        track!($expr.map_err(<crate::Error as From<std::io::Error>>::from))
+    };
 }
 
-pub use error::{Error, ErrorKind};
 pub use decode::{BinaryDecode, CompactDecode};
 pub use encode::{BinaryEncode, CompactEncode};
+pub use error::{Error, ErrorKind};
 
 pub mod data;
 pub mod message;
@@ -79,9 +78,9 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 #[cfg(test)]
 mod test {
+    use super::*;
     use data::Struct;
     use message::Message;
-    use super::*;
 
     #[test]
     #[rustfmt::skip]

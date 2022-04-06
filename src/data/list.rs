@@ -1,6 +1,5 @@
+use crate::data::{Elements, Map, Set, Struct};
 use std::ops::Deref;
-
-use data::{Struct, Elements, Map, Set};
 
 /// List.
 #[derive(Debug, Clone, PartialEq)]

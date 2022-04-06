@@ -1,5 +1,5 @@
 //! RPC message.
-use data::Struct;
+use crate::data::Struct;
 
 /// RPC message.
 #[derive(Debug, Clone, PartialEq)]

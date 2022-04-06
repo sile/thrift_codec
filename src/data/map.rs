@@ -1,6 +1,5 @@
-use data::{DataRef, DataKind, Elements};
-
-use {Result, ErrorKind};
+use crate::data::{DataKind, DataRef, Elements};
+use crate::{ErrorKind, Result};
 
 /// Map.
 ///
@@ -89,9 +88,9 @@ struct Inner {
 }
 impl Inner {
     pub fn get(&self, index: usize) -> Option<(DataRef, DataRef)> {
-        self.keys.get(index).map(|k| {
-            (k, self.values.get(index).expect("Never fails"))
-        })
+        self.keys
+            .get(index)
+            .map(|k| (k, self.values.get(index).expect("Never fails")))
     }
     pub fn len(&self) -> usize {
         self.keys.len()

@@ -1,5 +1,3 @@
-extern crate clap;
-extern crate thrift_codec;
 #[macro_use]
 extern crate trackable;
 

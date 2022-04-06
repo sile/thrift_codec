@@ -1,6 +1,5 @@
+use crate::data::{Elements, List, Map, Struct};
 use std::ops::Deref;
-
-use data::{Struct, Elements, Map, List};
 
 /// Set.
 ///

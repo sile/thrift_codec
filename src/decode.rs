@@ -1,11 +1,10 @@
+use crate::constants;
+use crate::data::{Data, DataKind, Elements, Field, List, Map, Set, Struct};
+use crate::message::{Message, MessageKind};
+use crate::zigzag;
+use crate::{Error, ErrorKind, Result};
+use byteorder::{BigEndian, LittleEndian, ReadBytesExt};
 use std::io::Read;
-use byteorder::{ReadBytesExt, BigEndian, LittleEndian};
-
-use {Result, Error, ErrorKind};
-use constants;
-use message::{Message, MessageKind};
-use data::{Data, DataKind, Struct, Map, Set, List, Field, Elements};
-use zigzag;
 
 /// This trait allows to decode objects which encoded by the [Thrift Binary protocol encoding][encoding].
 ///
@@ -293,36 +292,36 @@ impl CompactDecode for Struct {
             let data = match kind {
                 constants::COMPACT_FIELD_BOOLEAN_TRUE => Data::Bool(true),
                 constants::COMPACT_FIELD_BOOLEAN_FALSE => Data::Bool(false),
-                constants::COMPACT_FIELD_I8 => Data::I8(
-                    track!(CompactDecode::compact_decode(reader))?,
-                ),
-                constants::COMPACT_FIELD_I16 => Data::I16(
-                    track!(CompactDecode::compact_decode(reader))?,
-                ),
-                constants::COMPACT_FIELD_I32 => Data::I32(
-                    track!(CompactDecode::compact_decode(reader))?,
-                ),
-                constants::COMPACT_FIELD_I64 => Data::I64(
-                    track!(CompactDecode::compact_decode(reader))?,
-                ),
-                constants::COMPACT_FIELD_DOUBLE => Data::Double(
-                    track!(CompactDecode::compact_decode(reader))?,
-                ),
-                constants::COMPACT_FIELD_BINARY => Data::Binary(
-                    track!(CompactDecode::compact_decode(reader))?,
-                ),
-                constants::COMPACT_FIELD_LIST => Data::List(
-                    track!(CompactDecode::compact_decode(reader))?,
-                ),
-                constants::COMPACT_FIELD_SET => Data::Set(
-                    track!(CompactDecode::compact_decode(reader))?,
-                ),
-                constants::COMPACT_FIELD_MAP => Data::Map(
-                    track!(CompactDecode::compact_decode(reader))?,
-                ),
-                constants::COMPACT_FIELD_STRUCT => Data::Struct(
-                    track!(CompactDecode::compact_decode(reader))?,
-                ),
+                constants::COMPACT_FIELD_I8 => {
+                    Data::I8(track!(CompactDecode::compact_decode(reader))?)
+                }
+                constants::COMPACT_FIELD_I16 => {
+                    Data::I16(track!(CompactDecode::compact_decode(reader))?)
+                }
+                constants::COMPACT_FIELD_I32 => {
+                    Data::I32(track!(CompactDecode::compact_decode(reader))?)
+                }
+                constants::COMPACT_FIELD_I64 => {
+                    Data::I64(track!(CompactDecode::compact_decode(reader))?)
+                }
+                constants::COMPACT_FIELD_DOUBLE => {
+                    Data::Double(track!(CompactDecode::compact_decode(reader))?)
+                }
+                constants::COMPACT_FIELD_BINARY => {
+                    Data::Binary(track!(CompactDecode::compact_decode(reader))?)
+                }
+                constants::COMPACT_FIELD_LIST => {
+                    Data::List(track!(CompactDecode::compact_decode(reader))?)
+                }
+                constants::COMPACT_FIELD_SET => {
+                    Data::Set(track!(CompactDecode::compact_decode(reader))?)
+                }
+                constants::COMPACT_FIELD_MAP => {
+                    Data::Map(track!(CompactDecode::compact_decode(reader))?)
+                }
+                constants::COMPACT_FIELD_STRUCT => {
+                    Data::Struct(track!(CompactDecode::compact_decode(reader))?)
+                }
                 _ => track_panic!(ErrorKind::InvalidInput, "kind={}", kind),
             };
             fields.push(Field::new(id, data));
@@ -395,7 +394,6 @@ impl CompactDecode for List {
         Ok(List::new(elements))
     }
 }
-
 
 // [NOTE]
 //
