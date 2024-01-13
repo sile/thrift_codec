@@ -4,7 +4,6 @@ thrift_codec
 [![thrift_codec](https://img.shields.io/crates/v/thrift_codec.svg)](https://crates.io/crates/thrift_codec)
 [![Documentation](https://docs.rs/thrift_codec/badge.svg)](https://docs.rs/thrift_codec)
 [![Actions Status](https://github.com/sile/thrift_codec/workflows/CI/badge.svg)](https://github.com/sile/thrift_codec/actions)
-[![Coverage Status](https://coveralls.io/repos/github/sile/thrift_codec/badge.svg)](https://coveralls.io/github/sile/thrift_codec)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 This crate provides functionalities for encoding/deconding [Thrift][thrift] protocol.

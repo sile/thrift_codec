@@ -10,9 +10,6 @@ keywords = ["thrift"]
 license = "MIT"
 edition = "2021"
 
-[badges]
-coveralls = { repository = "sile/dagc" }
-
 [dependencies]
 byteorder = "1"
 trackable = "1.2"
