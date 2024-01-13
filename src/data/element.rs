@@ -1,4 +1,4 @@
-use crate::data::{DataKind, DataRef, List, Map, Set, Struct};
+use crate::data::{DataKind, DataRef, List, Map, Set, Struct, Uuid};
 
 /// A sequence of the values of a data kind.
 #[derive(Debug, Clone, PartialEq)]
@@ -16,6 +16,7 @@ pub enum Elements {
     Map(Vec<Map>),
     Set(Vec<Set>),
     List(Vec<List>),
+    Uuid(Vec<Uuid>),
 }
 impl Elements {
     /// Makes an empty sequence which can have the elements belonging to `kind`.
@@ -32,6 +33,7 @@ impl Elements {
             DataKind::Map => Elements::Map(Vec::new()),
             DataKind::Set => Elements::Set(Vec::new()),
             DataKind::List => Elements::List(Vec::new()),
+            DataKind::Uuid => Elements::Uuid(Vec::new()),
         }
     }
 
@@ -49,6 +51,7 @@ impl Elements {
             Elements::Map(ref v) => v.get(index).map(DataRef::Map),
             Elements::Set(ref v) => v.get(index).map(DataRef::Set),
             Elements::List(ref v) => v.get(index).map(DataRef::List),
+            Elements::Uuid(ref v) => v.get(index).map(DataRef::Uuid),
         }
     }
 
@@ -66,6 +69,7 @@ impl Elements {
             Elements::Map(ref v) => v.len(),
             Elements::Set(ref v) => v.len(),
             Elements::List(ref v) => v.len(),
+            Elements::Uuid(ref v) => v.len(),
         }
     }
 
@@ -96,6 +100,7 @@ impl Elements {
             Elements::Map(_) => DataKind::Map,
             Elements::Set(_) => DataKind::Set,
             Elements::List(_) => DataKind::List,
+            Elements::Uuid(_) => DataKind::Uuid,
         }
     }
 }

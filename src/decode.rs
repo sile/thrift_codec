@@ -1,5 +1,5 @@
 use crate::constants;
-use crate::data::{Data, DataKind, Elements, Field, List, Map, Set, Struct};
+use crate::data::{Data, DataKind, Elements, Field, List, Map, Set, Struct, Uuid};
 use crate::message::{Message, MessageKind};
 use crate::zigzag;
 use crate::{Error, ErrorKind, Result};
@@ -147,6 +147,13 @@ impl BinaryDecode for List {
         Ok(List::new(elements))
     }
 }
+impl BinaryDecode for Uuid {
+    fn binary_decode<R: Read>(reader: &mut R) -> Result<Self> {
+        let mut buf = [0; 16];
+        track_io!(reader.read_exact(&mut buf))?;
+        Ok(Uuid::new(buf))
+    }
+}
 fn binary_decode_data<R: Read>(reader: &mut R, kind: DataKind) -> Result<Data> {
     let data = match kind {
         DataKind::Bool => Data::Bool(track!(BinaryDecode::binary_decode(reader))?),
@@ -160,6 +167,7 @@ fn binary_decode_data<R: Read>(reader: &mut R, kind: DataKind) -> Result<Data> {
         DataKind::Map => Data::Map(track!(BinaryDecode::binary_decode(reader))?),
         DataKind::Set => Data::Set(track!(BinaryDecode::binary_decode(reader))?),
         DataKind::List => Data::List(track!(BinaryDecode::binary_decode(reader))?),
+        DataKind::Uuid => Data::Uuid(track!(BinaryDecode::binary_decode(reader))?),
     };
     Ok(data)
 }
@@ -176,6 +184,7 @@ fn binary_decode_element<R: Read>(reader: &mut R, elements: &mut Elements) -> Re
         Elements::Map(ref mut v) => v.push(track!(BinaryDecode::binary_decode(reader))?),
         Elements::Set(ref mut v) => v.push(track!(BinaryDecode::binary_decode(reader))?),
         Elements::List(ref mut v) => v.push(track!(BinaryDecode::binary_decode(reader))?),
+        Elements::Uuid(ref mut v) => v.push(track!(BinaryDecode::binary_decode(reader))?),
     };
     Ok(())
 }
@@ -394,6 +403,13 @@ impl CompactDecode for List {
         Ok(List::new(elements))
     }
 }
+impl CompactDecode for Uuid {
+    fn compact_decode<R: Read>(reader: &mut R) -> Result<Self> {
+        let mut buf = [0; 16];
+        track_io!(reader.read_exact(&mut buf))?;
+        Ok(Uuid::new(buf))
+    }
+}
 
 // [NOTE]
 //
@@ -428,6 +444,7 @@ fn compact_decode_element<R: Read>(reader: &mut R, elements: &mut Elements) -> R
         Elements::Map(ref mut v) => v.push(track!(CompactDecode::compact_decode(reader))?),
         Elements::Set(ref mut v) => v.push(track!(CompactDecode::compact_decode(reader))?),
         Elements::List(ref mut v) => v.push(track!(CompactDecode::compact_decode(reader))?),
+        Elements::Uuid(ref mut v) => v.push(track!(CompactDecode::compact_decode(reader))?),
     };
     Ok(())
 }
