@@ -19,7 +19,7 @@ trackable = "1.2"
 serde = { version = "1", optional = true, features = ["derive"] }
 
 [dev-dependencies]
-clap = { version = "3", features = ["derive"] }
+clap = { version = "4", features = ["derive"] }
 serdeconv = "0.4"
 
 [[example]]
