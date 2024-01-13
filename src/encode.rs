@@ -1,5 +1,5 @@
 use crate::constants;
-use crate::data::{Data, DataKind, DataRef, List, Map, Set, Struct};
+use crate::data::{Data, DataKind, DataRef, List, Map, Set, Struct, Uuid};
 use crate::message::Message;
 use crate::zigzag;
 use crate::{ErrorKind, Result};
@@ -68,6 +68,11 @@ impl BinaryEncode for Data {
         track!(self.as_ref().binary_encode(writer))
     }
 }
+impl BinaryEncode for Uuid {
+    fn binary_encode<W: Write>(&self, writer: &mut W) -> Result<()> {
+        track_io!(writer.write_all(&self.get()))
+    }
+}
 impl<'a> BinaryEncode for DataRef<'a> {
     fn binary_encode<W: Write>(&self, writer: &mut W) -> Result<()> {
         match *self {
@@ -82,6 +87,7 @@ impl<'a> BinaryEncode for DataRef<'a> {
             DataRef::Map(v) => track!(v.binary_encode(writer)),
             DataRef::Set(v) => track!(v.binary_encode(writer)),
             DataRef::List(v) => track!(v.binary_encode(writer)),
+            DataRef::Uuid(v) => track!(v.binary_encode(writer)),
         }
     }
 }
@@ -207,6 +213,11 @@ impl CompactEncode for Data {
         track!(self.as_ref().compact_encode(writer))
     }
 }
+impl CompactEncode for Uuid {
+    fn compact_encode<W: Write>(&self, writer: &mut W) -> Result<()> {
+        track_io!(writer.write_all(&self.get()))
+    }
+}
 impl<'a> CompactEncode for DataRef<'a> {
     fn compact_encode<W: Write>(&self, writer: &mut W) -> Result<()> {
         match *self {
@@ -221,6 +232,7 @@ impl<'a> CompactEncode for DataRef<'a> {
             DataRef::Map(v) => track!(v.compact_encode(writer)),
             DataRef::Set(v) => track!(v.compact_encode(writer)),
             DataRef::List(v) => track!(v.compact_encode(writer)),
+            DataRef::Uuid(v) => track!(v.compact_encode(writer)),
         }
     }
 }
@@ -246,6 +258,7 @@ impl CompactEncode for Struct {
                 Data::Map(_) => constants::COMPACT_FIELD_MAP,
                 Data::Set(_) => constants::COMPACT_FIELD_SET,
                 Data::List(_) => constants::COMPACT_FIELD_LIST,
+                Data::Uuid(_) => constants::COMPACT_FIELD_UUID,
             };
             track_io!(writer.write_u8((delta << 4) as u8 | kind))?;
             if delta == 0 {

@@ -1,4 +1,4 @@
-use crate::data::{List, Map, Set, Struct};
+use crate::data::{List, Map, Set, Struct, Uuid};
 
 /// Data.
 #[derive(Debug, Clone, PartialEq)]
@@ -16,6 +16,7 @@ pub enum Data {
     Map(Map),
     Set(Set),
     List(List),
+    Uuid(Uuid),
 }
 impl Data {
     /// Returns the kind of this data.
@@ -32,6 +33,7 @@ impl Data {
             Data::Map(_) => DataKind::Map,
             Data::Set(_) => DataKind::Set,
             Data::List(_) => DataKind::List,
+            Data::Uuid(_) => DataKind::Uuid,
         }
     }
 
@@ -49,6 +51,7 @@ impl Data {
             Data::Map(ref v) => DataRef::Map(v),
             Data::Set(ref v) => DataRef::Set(v),
             Data::List(ref v) => DataRef::List(v),
+            Data::Uuid(ref v) => DataRef::Uuid(v),
         }
     }
 }
@@ -139,6 +142,7 @@ pub enum DataRef<'a> {
     Map(&'a Map),
     Set(&'a Set),
     List(&'a List),
+    Uuid(&'a Uuid),
 }
 impl<'a> DataRef<'a> {
     /// Returns the kind of this data.
@@ -155,6 +159,7 @@ impl<'a> DataRef<'a> {
             DataRef::Map(_) => DataKind::Map,
             DataRef::Set(_) => DataKind::Set,
             DataRef::List(_) => DataKind::List,
+            DataRef::Uuid(_) => DataKind::Uuid,
         }
     }
 
@@ -172,6 +177,7 @@ impl<'a> DataRef<'a> {
             DataRef::Map(v) => Data::Map(v.to_owned()),
             DataRef::Set(v) => Data::Set(v.to_owned()),
             DataRef::List(v) => Data::List(v.to_owned()),
+            DataRef::Uuid(v) => Data::Uuid(v.to_owned()),
         }
     }
 }
@@ -192,6 +198,7 @@ pub enum DataKind {
     Map = 13,
     Set = 14,
     List = 15,
+    Uuid = 16,
 }
 impl DataKind {
     pub(crate) fn from_u8(kind: u8) -> Option<Self> {
@@ -207,6 +214,7 @@ impl DataKind {
             13 => DataKind::Map,
             14 => DataKind::Set,
             15 => DataKind::List,
+            16 => DataKind::Uuid,
             _ => return None,
         })
     }

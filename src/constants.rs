@@ -14,3 +14,4 @@ pub const COMPACT_FIELD_LIST: u8 = 9;
 pub const COMPACT_FIELD_SET: u8 = 10;
 pub const COMPACT_FIELD_MAP: u8 = 11;
 pub const COMPACT_FIELD_STRUCT: u8 = 12;
+pub const COMPACT_FIELD_UUID: u8 = 13;
