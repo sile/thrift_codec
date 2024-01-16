@@ -122,3 +122,17 @@ impl Field {
         &self.data
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::data::Uuid;
+
+    use super::*;
+
+    #[test]
+    fn test_field_uuid() {
+        let field = Field::new(1, Uuid::new(*b"0123456789abcdef"));
+        assert_eq!(field.id(), 1);
+        assert_eq!(field.data(), &Data::Uuid(Uuid::new(*b"0123456789abcdef")));
+    }
+}

@@ -125,6 +125,11 @@ impl From<List> for Data {
         Data::List(f)
     }
 }
+impl From<Uuid> for Data {
+    fn from(f: Uuid) -> Self {
+        Data::Uuid(f)
+    }
+}
 
 /// The reference to a `Data`.
 #[derive(Debug, Clone, PartialEq)]

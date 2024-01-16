@@ -1,6 +1,8 @@
 use crate::data::{Elements, Map, Set, Struct};
 use std::ops::Deref;
 
+use super::Uuid;
+
 /// List.
 #[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(Serialize))]
@@ -72,5 +74,10 @@ impl From<Vec<Set>> for List {
 impl From<Vec<List>> for List {
     fn from(f: Vec<List>) -> Self {
         List::new(Elements::List(f))
+    }
+}
+impl From<Vec<Uuid>> for List {
+    fn from(f: Vec<Uuid>) -> Self {
+        List::new(Elements::Uuid(f))
     }
 }

@@ -1,6 +1,8 @@
 use crate::data::{Elements, List, Map, Struct};
 use std::ops::Deref;
 
+use super::Uuid;
+
 /// Set.
 ///
 /// Note that internally this has the same representation with `List`.
@@ -75,5 +77,10 @@ impl From<Vec<Set>> for Set {
 impl From<Vec<List>> for Set {
     fn from(f: Vec<List>) -> Self {
         Set::new(Elements::List(f))
+    }
+}
+impl From<Vec<Uuid>> for Set {
+    fn from(f: Vec<Uuid>) -> Self {
+        Set::new(Elements::Uuid(f))
     }
 }

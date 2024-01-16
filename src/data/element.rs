@@ -159,6 +159,11 @@ impl From<Vec<List>> for Elements {
         Elements::List(f)
     }
 }
+impl From<Vec<Uuid>> for Elements {
+    fn from(f: Vec<Uuid>) -> Self {
+        Elements::Uuid(f)
+    }
+}
 
 /// An iterator which traverse the elements of a `Elements`.
 #[derive(Debug)]
