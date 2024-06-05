@@ -6,7 +6,7 @@ thrift_codec
 [![Actions Status](https://github.com/sile/thrift_codec/workflows/CI/badge.svg)](https://github.com/sile/thrift_codec/actions)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-This crate provides functionalities for encoding/deconding [Thrift][thrift] protocol.
+This crate provides functionalities for encoding/decoding [Thrift][thrift] protocol.
 
 [Documentation](https://docs.rs/thrift_codec)
 
