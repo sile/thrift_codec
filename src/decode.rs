@@ -373,8 +373,14 @@ impl CompactDecode for Set {
         let mut size = i32::from(size_and_kind >> 4);
         let kind = size_and_kind & 0b1111;
         if size == 0b1111 {
-            size = track!(i32::compact_decode(reader))?;
-            track_assert!(15 <= size, ErrorKind::InvalidInput, "size={}", size);
+            let varint_size = track!(read_varint(reader))?;
+            track_assert!(
+                15 <= varint_size && varint_size <= i32::MAX as u64,
+                ErrorKind::InvalidInput,
+                "size={}",
+                varint_size
+            );
+            size = varint_size as i32;
         }
         let kind = track_assert_some!(DataKind::from_u8(kind), ErrorKind::InvalidInput);
 
@@ -391,8 +397,14 @@ impl CompactDecode for List {
         let mut size = i32::from(size_and_kind >> 4);
         let kind = size_and_kind & 0b1111;
         if size == 0b1111 {
-            size = track!(i32::compact_decode(reader))?;
-            track_assert!(15 <= size, ErrorKind::InvalidInput, "size={}", size);
+            let varint_size = track!(read_varint(reader))?;
+            track_assert!(
+                15 <= varint_size && varint_size <= i32::MAX as u64,
+                ErrorKind::InvalidInput,
+                "size={}",
+                varint_size
+            );
+            size = varint_size as i32;
         }
         let kind = track_assert_some!(DataKind::from_u8(kind), ErrorKind::InvalidInput);
 
