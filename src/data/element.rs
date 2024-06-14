@@ -2,7 +2,7 @@ use crate::data::{DataKind, DataRef, List, Map, Set, Struct, Uuid};
 
 /// A sequence of the values of a data kind.
 #[derive(Debug, Clone, PartialEq)]
-#[cfg_attr(feature = "serde", derive(Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 #[allow(missing_docs)]
 pub enum Elements {
     Bool(Vec<bool>),

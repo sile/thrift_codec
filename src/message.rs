@@ -3,7 +3,7 @@ use crate::data::Struct;
 
 /// RPC message.
 #[derive(Debug, Clone, PartialEq)]
-#[cfg_attr(feature = "serde", derive(Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct Message {
     method_name: String,
     kind: MessageKind,
@@ -64,7 +64,7 @@ impl Message {
 
 /// The kind of a message.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-#[cfg_attr(feature = "serde", derive(Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 #[allow(missing_docs)]
 pub enum MessageKind {
     Call = 1,

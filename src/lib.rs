@@ -1,4 +1,4 @@
-//! This crate provides functionalities for encoding/deconding [Thrift][thrift] protocol.
+//! This crate provides functionalities for encoding/decoding [Thrift][thrift] protocol.
 //!
 //! # References
 //!
@@ -50,9 +50,6 @@
 #![warn(missing_docs)]
 #[macro_use]
 extern crate trackable;
-#[cfg(feature = "serde")]
-#[macro_use]
-extern crate serde;
 
 macro_rules! track_io {
     ($expr:expr) => {
