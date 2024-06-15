@@ -5,7 +5,7 @@ use super::Uuid;
 
 /// List.
 #[derive(Debug, Clone, PartialEq)]
-#[cfg_attr(feature = "serde", derive(Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct List {
     elements: Elements,
 }

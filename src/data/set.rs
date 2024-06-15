@@ -8,7 +8,7 @@ use super::Uuid;
 /// Note that internally this has the same representation with `List`.
 /// No duplicate elements are removed.
 #[derive(Debug, Clone, PartialEq)]
-#[cfg_attr(feature = "serde", derive(Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct Set {
     elements: Elements,
 }

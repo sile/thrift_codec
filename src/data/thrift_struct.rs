@@ -12,7 +12,7 @@ use crate::data::Data;
 /// assert_eq!(a, b);
 /// ```
 #[derive(Debug, Clone, PartialEq)]
-#[cfg_attr(feature = "serde", derive(Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct Struct {
     fields: Vec<Field>,
 }
@@ -95,7 +95,7 @@ where
 
 /// A struct field.
 #[derive(Debug, Clone, PartialEq)]
-#[cfg_attr(feature = "serde", derive(Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct Field {
     id: i16,
     data: Data,

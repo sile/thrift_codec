@@ -6,7 +6,7 @@ use crate::{ErrorKind, Result};
 /// Internally this is represented by the data structure called "associative array".
 /// No duplicate keys are removed.
 #[derive(Debug, Clone, PartialEq)]
-#[cfg_attr(feature = "serde", derive(Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct Map(Option<Inner>);
 impl Map {
     /// Makes an empty `Map` instance.
@@ -81,7 +81,7 @@ impl Map {
 }
 
 #[derive(Debug, Clone, PartialEq)]
-#[cfg_attr(feature = "serde", derive(Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 struct Inner {
     keys: Elements,
     values: Elements,

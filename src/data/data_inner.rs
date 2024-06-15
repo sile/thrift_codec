@@ -2,7 +2,7 @@ use crate::data::{List, Map, Set, Struct, Uuid};
 
 /// Data.
 #[derive(Debug, Clone, PartialEq)]
-#[cfg_attr(feature = "serde", derive(Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 #[allow(missing_docs)]
 pub enum Data {
     Bool(bool),
@@ -133,7 +133,7 @@ impl From<Uuid> for Data {
 
 /// The reference to a `Data`.
 #[derive(Debug, Clone, PartialEq)]
-#[cfg_attr(feature = "serde", derive(Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 #[allow(missing_docs)]
 pub enum DataRef<'a> {
     Bool(&'a bool),
@@ -189,7 +189,7 @@ impl<'a> DataRef<'a> {
 
 /// Available data kinds.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-#[cfg_attr(feature = "serde", derive(Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 #[allow(missing_docs)]
 pub enum DataKind {
     Bool = 2,
