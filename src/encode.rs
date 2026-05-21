@@ -44,7 +44,7 @@ impl BinaryEncode for f64 {
         track_io!(writer.write_f64::<BigEndian>(*self))
     }
 }
-impl<'a> BinaryEncode for &'a [u8] {
+impl BinaryEncode for &[u8] {
     fn binary_encode<W: Write>(&self, writer: &mut W) -> Result<()> {
         track_assert!(self.len() <= 0x7FFF_FFFF, ErrorKind::InvalidInput);
         track!((self.len() as i32).binary_encode(writer))?;
@@ -188,7 +188,7 @@ impl CompactEncode for f64 {
         track_io!(writer.write_f64::<LittleEndian>(*self))
     }
 }
-impl<'a> CompactEncode for &'a [u8] {
+impl CompactEncode for &[u8] {
     fn compact_encode<W: Write>(&self, writer: &mut W) -> Result<()> {
         track_assert!(self.len() <= 0x7FFF_FFFF, ErrorKind::InvalidInput);
         track!(write_varint(writer, self.len() as u64))?;

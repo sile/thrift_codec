@@ -38,7 +38,7 @@ impl Elements {
     }
 
     /// Returns the element placed at the specified index.
-    pub fn get(&self, index: usize) -> Option<DataRef> {
+    pub fn get(&self, index: usize) -> Option<DataRef<'_>> {
         match *self {
             Elements::Bool(ref v) => v.get(index).map(DataRef::Bool),
             Elements::I8(ref v) => v.get(index).map(DataRef::I8),
@@ -79,7 +79,7 @@ impl Elements {
     }
 
     /// Returns an iterator over the elements of this sequence.
-    pub fn iter(&self) -> ElementIter {
+    pub fn iter(&self) -> ElementIter<'_> {
         ElementIter {
             elements: self,
             index: 0,

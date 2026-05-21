@@ -38,7 +38,7 @@ impl Data {
     }
 
     /// Returns the reference to this data.
-    pub fn as_ref(&self) -> DataRef {
+    pub fn as_ref(&self) -> DataRef<'_> {
         match *self {
             Data::Bool(ref v) => DataRef::Bool(v),
             Data::I8(ref v) => DataRef::I8(v),

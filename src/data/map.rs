@@ -47,12 +47,12 @@ impl Map {
     }
 
     /// Returns the entry placed at the specified index.
-    pub fn get(&self, index: usize) -> Option<(DataRef, DataRef)> {
+    pub fn get(&self, index: usize) -> Option<(DataRef<'_>, DataRef<'_>)> {
         self.0.as_ref().and_then(|inner| inner.get(index))
     }
 
     /// Returns an iterator over this map.
-    pub fn iter(&self) -> MapIter {
+    pub fn iter(&self) -> MapIter<'_> {
         MapIter {
             map: self,
             index: 0,
@@ -87,7 +87,7 @@ struct Inner {
     values: Elements,
 }
 impl Inner {
-    pub fn get(&self, index: usize) -> Option<(DataRef, DataRef)> {
+    pub fn get(&self, index: usize) -> Option<(DataRef<'_>, DataRef<'_>)> {
         self.keys
             .get(index)
             .map(|k| (k, self.values.get(index).expect("Never fails")))
